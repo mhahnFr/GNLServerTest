@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -103,6 +104,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 					dispose();
 			}
 		});
+		startServer();
 	}
 
 	@Override
@@ -131,7 +133,22 @@ public class ServerFrame extends JFrame implements ActionListener {
 	 */
 	private void startServer() {
 		statusText.setText("Starting server...");
-
+		if (server == null) {
+			String port = JOptionPane.showInputDialog(this, "Enter the port to use by the server:", "Server port", JOptionPane.PLAIN_MESSAGE);
+			int p;
+			try {
+				p = Integer.parseInt(port);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "No port number given, action canceled!", "Port number", JOptionPane.ERROR_MESSAGE);
+				statusText.setText("Server isn't running");
+				return;
+			}
+			server = new Server(p);
+		}
+		System.out.println(server.thread.getState());
+		server.start();
+		start.setEnabled(false);
+		statusText.setText("Server running");
 	}
 
 	/**
@@ -142,16 +159,32 @@ public class ServerFrame extends JFrame implements ActionListener {
 	 * @return Returns wether the user wants to close the server.
 	 */
 	private boolean killServer() {
-		if (true) {
+		statusText.setText("Killing server...");
+		if (server.isRunning()) {
 			if (JOptionPane.showConfirmDialog(
 				this,
 				"Do you really want to close all connections and stop the service?",
 				"Close server", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
-				
-				return true;
-			}
-		} else
+					statusText.setText("Closing server");
+					try {
+						server.kill();
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(this, "Could not close server!", "Error", JOptionPane.ERROR_MESSAGE);
+						// Endless loop on error?
+						return false;
+					}
+					//if (!server.isRunning()) {
+						statusText.setText("Server killed.");
+						start.setEnabled(true);
+						kill.setEnabled(false);
+					//}
+					return true;
+				}
+		} else {
+			statusText.setText("Server isn't running.");
 			return true;
+		}
+		statusText.setText("Server running");
 		return false;
 	}
 
@@ -161,11 +194,22 @@ public class ServerFrame extends JFrame implements ActionListener {
 	 * he wants to start the service.
 	 */
 	private void sendMessage() {
-		String message = JOptionPane.showInputDialog(this, "Enter the message to send:", null);
-		if (message == null) {
-			message = "";
+		if (server.isRunning()) {
+			String message = JOptionPane.showInputDialog(this, "Enter the message to send:", null);
+			if (message == null) {
+				message = "";
+			}
+			statusText.setText("Sending message...");
+			server.sendMessage(message);
+			statusText.setText("Server running");
+		} else if (JOptionPane.showConfirmDialog(
+			this,
+			"Server is not running,\ndo you want to start it now?",
+			"Server not running",
+			JOptionPane.OK_CANCEL_OPTION,
+			JOptionPane.ERROR_MESSAGE) == JOptionPane.OK_OPTION) {
+				startServer();
 		}
-
 	}
 
 	public static void main(final String[] args) {
