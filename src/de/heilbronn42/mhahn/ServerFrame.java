@@ -19,11 +19,6 @@ import javax.swing.JScrollPane;
  * This class represents the GUI for the server for testing
  * 42cursus/get_next_line. It also has the main starting point.
  * 
- * unistd.h
- * sys/socket.h
- * 		socket()
- * 		bind() || connect()
- * 
  * @author mhahn
  * @since 17.07.21
  */
@@ -199,6 +194,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 			if (message == null) {
 				message = "";
 			}
+			message += '\n';
 			statusText.setText("Sending message...");
 			try {
 				server.sendMessage(message);
