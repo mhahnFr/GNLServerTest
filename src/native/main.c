@@ -14,9 +14,9 @@ int main(int argc, char **argv) {
 			char *line;
 			while (1) {
 				line = get_next_line(fd);
-				if (line != NULL) {
+				//if (line != NULL) {
 					printf("%s", line);
-				}
+				//}
 			}
 		}
 	} else {
