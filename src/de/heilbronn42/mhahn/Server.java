@@ -16,7 +16,7 @@ public class Server {
 	 * The thread in which the server is running.
 	 */
 	// TODO Use SwingWorker? instead of Thread.
-	public Thread thread;
+	private Thread thread;
 
 	/**
 	 * The port on which the server is listening.

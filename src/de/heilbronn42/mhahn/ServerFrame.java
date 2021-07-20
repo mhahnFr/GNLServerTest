@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -67,6 +68,28 @@ public class ServerFrame extends JFrame implements ActionListener {
 	private static final String START = "start";
 
 	/**
+	 * The preferences identifier for the x-coordinate of the windows
+	 * position.
+	 */
+	private static final String W_POS_X = "window-position-x";
+
+	/**
+	 * The preferences identifier for the y-coordinate of the windows
+	 * position.
+	 */
+	private static final String W_POS_Y = "window-position-y";
+
+	/**
+	 * The preferences identifier for the width of the window.
+	 */
+	private static final String W_SIZE_W = "window-size-width";
+
+	/**
+	 * The preferences identifier for the height of the window.
+	 */
+	private static final String W_SIZE_H = "window-size-height";
+
+	/**
 	 * Constructs a new window with the server controls.
 	 */
 	public ServerFrame() {
@@ -89,14 +112,30 @@ public class ServerFrame extends JFrame implements ActionListener {
 		sendMessage.setActionCommand(SEND);
 		sendMessage.addActionListener(this);
 		contentPane.add(sendMessage);
-		// TODO Save window size & position
-		pack();
-		setLocationRelativeTo(null);
+		Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+		int width = prefs.getInt(W_SIZE_W, -1);
+		int height = prefs.getInt(W_SIZE_H, -1);
+		if (width == -1 || height == -1)
+			pack();
+		else
+			setSize(width, height);
+		int x = prefs.getInt(W_POS_X, -1);
+		int y = prefs.getInt(W_POS_Y, -1);
+		if (x == -1 || y == -1)
+			setLocationRelativeTo(null);
+		else
+			setLocation(x, y);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (killServer())
+				if (killServer()) {
+					// TODO Save window size & position
+					prefs.putInt(W_POS_X, getX());
+					prefs.putInt(W_POS_Y, getY());
+					prefs.putInt(W_SIZE_H, getHeight());
+					prefs.putInt(W_SIZE_W, getWidth());
 					dispose();
+				}
 			}
 		});
 		startServer();
@@ -140,7 +179,6 @@ public class ServerFrame extends JFrame implements ActionListener {
 			}
 			server = new Server(p);
 		}
-		System.out.println(server.thread.getState());
 		server.start();
 		start.setEnabled(false);
 		statusText.setText("Server running");
@@ -165,7 +203,6 @@ public class ServerFrame extends JFrame implements ActionListener {
 						server.kill();
 					} catch (IOException e) {
 						JOptionPane.showMessageDialog(this, "Could not close server!", "Error", JOptionPane.ERROR_MESSAGE);
-						// Endless loop on error?
 						return false;
 					}
 					//if (!server.isRunning()) {
