@@ -2,6 +2,7 @@ package de.heilbronn42.mhahn;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * The representation of the server. It includes the thread in which it
@@ -28,12 +29,17 @@ public class Server {
 	private ServerSocket socket;
 
 	/**
+	 * The established connection.
+	 */
+	private Socket bound;
+
+	/**
 	 * The runnable containing the server settling up.
 	 */
 	private Runnable r = () -> {
 		try {
 			socket = new ServerSocket(port);
-			socket.accept();
+			bound = socket.accept();
 		} catch (IOException e) {
 			// Doesn't matter if the thread crashes.
 			throw new RuntimeException(e);
@@ -73,9 +79,14 @@ public class Server {
 
 	/**
 	 * Kills the server. Should close all connections and stop accepting new ones.
+	 * 
+	 * @throws IOException If something goes wrong.
 	 */
 	public void kill() throws IOException {
-		socket.close();
+		if (bound != null)
+			bound.close();
+		if (socket != null)
+			socket.close();
 		thread.interrupt();
 	}
 
@@ -83,8 +94,10 @@ public class Server {
 	 * Sends a message. Sends the given message to all connected clients.
 	 * 
 	 * @param message The message to be sent.
+	 * @throws IOException If something goes wrong.
 	 */
-	public void sendMessage(String message) {
-
+	public void sendMessage(String message) throws IOException {
+		bound.getOutputStream().write(message.getBytes());
+		bound.getOutputStream().flush();
 	}
 }

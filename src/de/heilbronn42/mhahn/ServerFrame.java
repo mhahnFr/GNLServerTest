@@ -200,7 +200,15 @@ public class ServerFrame extends JFrame implements ActionListener {
 				message = "";
 			}
 			statusText.setText("Sending message...");
-			server.sendMessage(message);
+			try {
+				server.sendMessage(message);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(
+					this,
+					"Could not send message:\n" + e.getLocalizedMessage(),
+					"Error sending message",
+					JOptionPane.ERROR_MESSAGE);
+			}
 			statusText.setText("Server running");
 		} else if (JOptionPane.showConfirmDialog(
 			this,
