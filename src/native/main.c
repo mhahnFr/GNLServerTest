@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 				}
 			}*/
 			int ret = read(fd, line, 10);
-			while (ret != -1) {
+			while (ret > 0) {
 				printf("%d | %s\n", ret, line);
 				ret = read(fd, line, 10);
 			}
