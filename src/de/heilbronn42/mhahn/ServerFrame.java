@@ -86,14 +86,12 @@ public class ServerFrame extends JFrame implements ActionListener {
 	private static final String SETTINGS = "settings";
 
 	/**
-	 * The preferences identifier for the x-coordinate of the windows
-	 * position.
+	 * The preferences identifier for the x-coordinate of the windows position.
 	 */
 	private static final String W_POS_X = "window-position-x";
 
 	/**
-	 * The preferences identifier for the y-coordinate of the windows
-	 * position.
+	 * The preferences identifier for the y-coordinate of the windows position.
 	 */
 	private static final String W_POS_Y = "window-position-y";
 
@@ -160,6 +158,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 					prefs.putInt(W_POS_Y, getY());
 					prefs.putInt(W_SIZE_H, getHeight());
 					prefs.putInt(W_SIZE_W, getWidth());
+					writeSettings();
 					dispose();
 				}
 			}
@@ -169,8 +168,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand())
-		{
+		switch (e.getActionCommand()) {
 			case START:
 				startServer();
 				break;
@@ -196,49 +194,37 @@ public class ServerFrame extends JFrame implements ActionListener {
 	 * Shows a dialog with the settings.
 	 */
 	private void showSettings() {
-		JDialog settingsWindow = new JDialog();
-		settingsWindow.setTitle("Settings");
+		JDialog settingsWindow = new JDialog(this, "Settings", true);
 		settingsWindow.setLayout(new GridLayout(4, 1));
 		settingsWindow.add(new JLabel("Port number:"));
 		JTextField portField = new JTextField();
 		settingsWindow.add(portField);
 		JButton reset = new JButton("Reset settings");
 		reset.addActionListener(event -> {
-			if (JOptionPane.showConfirmDialog(
-				settingsWindow,
-				"Do you really want to reset all settings?",
-				"Reset settings",
-				JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
+			if (JOptionPane.showConfirmDialog(settingsWindow, "Do you really want to reset all settings?",
+					"Reset settings", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
 				try {
 					prefs.clear();
 				} catch (BackingStoreException e) {
 					JOptionPane.showMessageDialog(settingsWindow,
-					"Could not clear settings:\n" + e.getLocalizedMessage(),
-					"Error clearing settings",
-					JOptionPane.ERROR_MESSAGE);
+							"Could not clear settings:\n" + e.getLocalizedMessage(), "Error clearing settings",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		settingsWindow.add(reset);
-		settingsWindow.add(
-			new JLabel("Port change will apply to next started server."));
-		settingsWindow.addWindowStateListener(event -> {
-			switch (event.getNewState()) {
-				case WindowEvent.WINDOW_DEACTIVATED:
-					int port = -1;
-					try {
-						port = Integer.parseInt(portField.getText());
-					} catch (NumberFormatException e) {} // I mean, what else should I do here?
-					if (port != -1)
-						prefs.putInt(PORT_NO, port);
-					break;
-
-				case WindowEvent.WINDOW_ACTIVATED:
-					portField.setText(Integer.toString(prefs.getInt(PORT_NO, 42)));
-					break;
-			}
-		});
+		settingsWindow.add(new JLabel("Port change will apply to next started server."));
+		
+				/*portField.setText(Integer.toString(prefs.getInt(PORT_NO, 42)));
+		
+				int port = -1;
+				try {
+					port = Integer.parseInt(portField.getText());
+				} catch (NumberFormatException ex) {} // I mean, what else should I do here?
+				if (port != -1)
+					prefs.putInt(PORT_NO, port);*/
+		settingsWindow.setLocationRelativeTo(this);
 		settingsWindow.pack();
 		settingsWindow.setVisible(true);
 	}
@@ -249,27 +235,51 @@ public class ServerFrame extends JFrame implements ActionListener {
 	private void startServer() {
 		statusText.setText("Starting server...");
 		if (server == null) {
-			String port = JOptionPane.showInputDialog(
-				this,
-				"Enter the port to use by the server:",
-				"Server port",
-				JOptionPane.PLAIN_MESSAGE);
-			int p;
-			try {
-				p = Integer.parseInt(port);
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(this,
-				"No port number given, action canceled!",
-				"Port number",
-				JOptionPane.ERROR_MESSAGE);
-				statusText.setText("Server isn't running");
-				return;
+			int p = prefs.getInt(PORT_NO, -1);
+			if (p == -1) {
+				String port = JOptionPane.showInputDialog(
+					this,
+					"Enter the port to use by the server:",
+					"Server port",
+					JOptionPane.PLAIN_MESSAGE);
+				try {
+					p = Integer.parseInt(port);
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(this,
+					"No port number given, action canceled!",
+					"Port number",
+					JOptionPane.ERROR_MESSAGE);
+					statusText.setText("Server isn't running");
+					return;
+				}
+				prefs.putInt(PORT_NO, p);
+				if (!writeSettings()) {
+					JOptionPane.showMessageDialog(
+						this,
+						"Could not write settings!",
+						"Error storing settings",
+						JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			server = new Server(p);
 		}
 		server.start();
 		start.setEnabled(false);
 		statusText.setText("Server running");
+	}
+
+	/**
+	 * Writes the settings.
+	 * 
+	 * @return Returns wether the storing of the settings was successful or not.
+	 */
+	private boolean writeSettings() {
+		try {
+			prefs.flush();
+		} catch (BackingStoreException e) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -281,7 +291,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 	 */
 	private boolean killServer() {
 		statusText.setText("Killing server...");
-		if (server.isRunning()) {
+		if (server != null && server.isRunning()) {
 			if (JOptionPane.showConfirmDialog(
 				this,
 				"Do you really want to close all connections and stop the service?",
@@ -319,7 +329,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 	 * he wants to start the service.
 	 */
 	private void sendMessage() {
-		if (server.isRunning()) {
+		if (server != null && server.isRunning()) {
 			String message = JOptionPane.showInputDialog(
 				this, "Enter the message to send:", null);
 			if (message == null) {
