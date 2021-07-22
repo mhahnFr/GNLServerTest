@@ -39,7 +39,12 @@ public class Server {
 	private Runnable r = () -> {
 		try {
 			socket = new ServerSocket(port);
-			bound = socket.accept();
+			socket.setReuseAddress(true);
+			while (!socket.isClosed()) {
+				bound = socket.accept();
+				Connection c = new Connection(socket.accept());
+				c.startInNewThread();
+			}
 		} catch (IOException e) {
 			// Doesn't matter if the thread crashes.
 			throw new RuntimeException(e);
