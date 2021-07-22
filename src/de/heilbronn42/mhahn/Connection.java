@@ -58,6 +58,7 @@ public class Connection implements Runnable, Closeable {
 	 */
 	private void print(String s) throws IOException {
 		socket.getOutputStream().write(s.getBytes("UTF-8"));
+		socket.getOutputStream().flush();
 	}
 
 	/**
@@ -86,8 +87,11 @@ public class Connection implements Runnable, Closeable {
 		try {
 			println("Hello world!");
 			println("Sending yet another message!");
+			println("socket = new ServerSocket(port);socket.setReuseAddress(true);while (!socket.isClosed()) {bound = socket.accept();Connection c = new Connection(bound);c.startInNewThread();}} catch (IOException e) {// Doesn't matter if the thread crashes.throw new RuntimeException(e);}};/*** Creates the server with the given port. It won't run right away,* call {@link start()} to settle it up.* * @param port The port on which the server should be running.*/public Server(int port) {this.port = port;thread = new Thread(r);}/*** Returns wether the server is running. Running means it should accept* new connections.* * @return Returns if the server is running or not.*/public boolean isRunning() {return !thread.isInterrupted();}/*** Starts the server.*/public void start() {if (thread.isInterrupted()) {thread = new Thread(r);}thread.start();}/*** Kills the server. Should close all connections and stop ac");
 			close();
 		} catch (IOException e) {
+			// As of now, the thread should finish either way.
+			throw new RuntimeException(e);
 		}
 	}
 }

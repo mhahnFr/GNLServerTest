@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "connection.h"
 
@@ -20,7 +21,7 @@ void GNLClient_Banner()
  * Arguments: the argument count, the array with the arguments, a pointer
  * to the address to be filled, a pointer to the port number to be filled.
  */
-bool GNLClient_ParseArgs(int argc, char** argv, const char** address, unsigned int* port)
+bool GNLClient_ParseArgs(int argc, char** argv, const char** address, int* port)
 {
 	if (argc != 3) return false;
 
@@ -36,19 +37,31 @@ bool GNLClient_ParseArgs(int argc, char** argv, const char** address, unsigned i
  * Creates a new connection to the specified address using the specified
  * port.
  */
-void GNLClient_Run(const char* address, unsigned int port)
+void GNLClient_Run(const char* address, int port)
 {
 	struct GNLClient_Connection*  connection;
 
 	connection = GNLClient_Connection_New(address, port);
-	             printf("Connection is %p\n", connection);
-	             GNLClient_Connection_Delete(connection);
+	             /*printf("Connection is %p\n", connection);
+				 printf("FD is %d\n", connection->fd);
+				 printf("Line: %s", GNLClient_Connection_ReadLine(connection));*/
+	if (connection == NULL) {
+		printf("Could not connect to %s:%d\n", address, port);
+		return;
+	}
+	char* line = GNLClient_Connection_ReadLine(connection);
+	while (line != NULL)
+	{
+		printf("%s", line);
+		line = GNLClient_Connection_ReadLine(connection);
+	}
+	GNLClient_Connection_Delete(connection);
 }
 
 int main(int argc, char** argv)
 {
-	const char*   address;
-	unsigned int  port;
+	const char*  address;
+	int          port;
 
 	GNLClient_Banner();
 

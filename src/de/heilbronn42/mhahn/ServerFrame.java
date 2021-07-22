@@ -355,7 +355,16 @@ public class ServerFrame extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Prints the info banner for this program.
+	 */
+	private static void banner() {
+		System.out.println("\n    GNLServer v0.0.1");
+		System.out.println("    by (mhahn, enijakow)@student.42heilbronn.de\n");
+	}
+
 	public static void main(final String[] args) {
+		banner();
 		EventQueue.invokeLater(() -> new ServerFrame().setVisible(true));
 	}
 }

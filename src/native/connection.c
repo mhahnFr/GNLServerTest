@@ -3,18 +3,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
 
 #include "connection.h"
+#include GNLHeader
 
-
-struct GNLClient_Connection
-{
-	struct sockaddr_in  addr;
-	unsigned int        fd;
-};
-
-struct GNLClient_Connection*  GNLClient_Connection_New(const char* host, unsigned int port)
+struct GNLClient_Connection*  GNLClient_Connection_New(const char* host, int port)
 {
 	struct GNLClient_Connection*  connection;
 
@@ -52,7 +46,7 @@ void GNLClient_Connection_Delete(struct GNLClient_Connection* self)
 
 char* GNLClient_Connection_ReadLine(struct GNLClient_Connection* self)
 {
-	return NULL; /* TODO */
+	return get_next_line(self->fd);
 }
 
 void GNLClient_Connection_WriteLine(struct GNLClient_Connection* self, const char* msg)
