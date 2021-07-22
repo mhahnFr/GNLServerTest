@@ -4,7 +4,9 @@
 
 #include "connection.h"
 
-
+/*
+ * Prints an info banner of this program.
+ */
 void GNLClient_Banner()
 {
 	printf("\n");
@@ -13,7 +15,11 @@ void GNLClient_Banner()
 	printf("\n");
 }
 
-
+/*
+ * Interpretes the arguments. Returns wether the conversion was successful.
+ * Arguments: the argument count, the array with the arguments, a pointer
+ * to the address to be filled, a pointer to the port number to be filled.
+ */
 bool GNLClient_ParseArgs(int argc, char** argv, const char** address, unsigned int* port)
 {
 	if (argc != 3) return false;
@@ -21,11 +27,15 @@ bool GNLClient_ParseArgs(int argc, char** argv, const char** address, unsigned i
 	*address = argv[1];
 	*port    = atoi(argv[2]);
 
+	if (*port == -1) return false;
+
 	return true;
 }
 
-
-
+/*
+ * Creates a new connection to the specified address using the specified
+ * port.
+ */
 void GNLClient_Run(const char* address, unsigned int port)
 {
 	struct GNLClient_Connection*  connection;
@@ -34,7 +44,6 @@ void GNLClient_Run(const char* address, unsigned int port)
 	             printf("Connection is %p\n", connection);
 	             GNLClient_Connection_Delete(connection);
 }
-
 
 int main(int argc, char** argv)
 {
@@ -51,4 +60,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-

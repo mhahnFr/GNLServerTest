@@ -15,7 +15,7 @@ public class Server {
 	/**
 	 * The thread in which the server is running.
 	 */
-	// TODO Use SwingWorker? instead of Thread.
+	// TODO Use SwingWorker instead of Thread.
 	private Thread thread;
 
 	/**
@@ -42,7 +42,7 @@ public class Server {
 			socket.setReuseAddress(true);
 			while (!socket.isClosed()) {
 				bound = socket.accept();
-				Connection c = new Connection(socket.accept());
+				Connection c = new Connection(bound);
 				c.startInNewThread();
 			}
 		} catch (IOException e) {

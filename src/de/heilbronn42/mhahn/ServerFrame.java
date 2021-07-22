@@ -308,11 +308,9 @@ public class ServerFrame extends JFrame implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
-					//if (!server.isRunning()) {
-						statusText.setText("Server killed.");
-						start.setEnabled(true);
-						kill.setEnabled(false);
-					//}
+					statusText.setText("Server killed.");
+					start.setEnabled(true);
+					kill.setEnabled(false);
 					return true;
 				}
 		} else {

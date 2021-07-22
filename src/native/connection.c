@@ -14,7 +14,6 @@ struct GNLClient_Connection
 	unsigned int        fd;
 };
 
-
 struct GNLClient_Connection*  GNLClient_Connection_New(const char* host, unsigned int port)
 {
 	struct GNLClient_Connection*  connection;
@@ -58,7 +57,7 @@ char* GNLClient_Connection_ReadLine(struct GNLClient_Connection* self)
 
 void GNLClient_Connection_WriteLine(struct GNLClient_Connection* self, const char* msg)
 {
+	if (self == NULL || msg == NULL) return;
+
 	write(self->fd, msg, strlen(msg));
 }
-
-
