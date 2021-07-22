@@ -1,31 +1,54 @@
-/*
- * Edit this path to your get_next_line.h.
- */
-#include "../../../get_next_line/get_next_line.h"
-#include "gnl-server-test.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
-#include <unistd.h>
 
-int main(int argc, char **argv) {
-	if (argc == 3) {
-		int fd = establishConnection(atoi(argv[1]), argv[2]);
-		printf("%d\n", fd);
-		if (fd != -1) {
-			char line[10];
-			/*while (1) {
-				line = get_next_line(fd);
-				if (line != NULL) {
-					printf("%s", line);
-				}
-			}*/
-			int ret = read(fd, line, 10);
-			while (ret > 0) {
-				printf("%d | %s\n", ret, line);
-				ret = read(fd, line, 10);
-			}
-		}
-	} else {
-		printf("Provide a number to asign a port and an IP address.\n");
-	}
+#include "connection.h"
+
+
+void GNLClient_Banner()
+{
+	printf("\n");
+	printf("    GNLClient v0.0.1\n");
+	printf("    by (mhahn, enijakow)@student.42heilbronn.de\n");
+	printf("\n");
 }
+
+
+bool GNLClient_ParseArgs(int argc, char** argv, const char** address, unsigned int* port)
+{
+	if (argc != 3) return false;
+
+	*address = argv[1];
+	*port    = atoi(argv[2]);
+
+	return true;
+}
+
+
+
+void GNLClient_Run(const char* address, unsigned int port)
+{
+	struct GNLClient_Connection*  connection;
+
+	connection = GNLClient_Connection_New(address, port);
+	             printf("Connection is %p\n", connection);
+	             GNLClient_Connection_Delete(connection);
+}
+
+
+int main(int argc, char** argv)
+{
+	const char*   address;
+	unsigned int  port;
+
+	GNLClient_Banner();
+
+	if (GNLClient_ParseArgs(argc, argv, &address, &port)) {
+		GNLClient_Run(address, port);
+	} else {
+		printf("usage: %s address port\n", argv[0]);
+	}
+
+	return 0;
+}
+
