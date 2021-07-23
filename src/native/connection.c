@@ -3,10 +3,16 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
-//#include <arpa/inet.h>
+#include <arpa/inet.h>
 
 #include "connection.h"
 #include GNLHeader
+
+struct GNLClient_Connection
+{
+	struct sockaddr_in  addr;
+	int                 fd;
+};
 
 struct GNLClient_Connection*  GNLClient_Connection_New(const char* host, int port)
 {

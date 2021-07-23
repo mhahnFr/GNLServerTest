@@ -2,17 +2,12 @@
 #define GNLCLIENT_CONNECTION_H
 
 #define GNLHeader "../../../get_next_line/get_next_line.h"
-#include <arpa/inet.h>
 
 /*
  * The Connection object. It includes the address to which to connect
  * as well as the file descriptor of the connection.
  */
-struct GNLClient_Connection
-{
-	struct sockaddr_in  addr;
-	int                 fd;
-};
+struct GNLClient_Connection;
 
 /*
  * Allocates and returns a new GNLClient_Connection using the provided address

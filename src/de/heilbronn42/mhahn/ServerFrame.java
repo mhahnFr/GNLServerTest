@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.IOException;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -215,15 +216,22 @@ public class ServerFrame extends JFrame implements ActionListener {
 		});
 		settingsWindow.add(reset);
 		settingsWindow.add(new JLabel("Port change will apply to next started server."));
-		
-				/*portField.setText(Integer.toString(prefs.getInt(PORT_NO, 42)));
-		
+		settingsWindow.addWindowFocusListener(new WindowFocusListener() {
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				portField.setText(Integer.toString(prefs.getInt(PORT_NO, 42)));
+			}
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
 				int port = -1;
 				try {
 					port = Integer.parseInt(portField.getText());
 				} catch (NumberFormatException ex) {} // I mean, what else should I do here?
 				if (port != -1)
-					prefs.putInt(PORT_NO, port);*/
+					prefs.putInt(PORT_NO, port);
+			}
+		});
 		settingsWindow.setLocationRelativeTo(this);
 		settingsWindow.pack();
 		settingsWindow.setVisible(true);

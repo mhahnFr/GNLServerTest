@@ -42,9 +42,6 @@ void GNLClient_Run(const char* address, int port)
 	struct GNLClient_Connection*  connection;
 
 	connection = GNLClient_Connection_New(address, port);
-	             /*printf("Connection is %p\n", connection);
-				 printf("FD is %d\n", connection->fd);
-				 printf("Line: %s", GNLClient_Connection_ReadLine(connection));*/
 	if (connection == NULL) {
 		printf("Could not connect to %s:%d\n", address, port);
 		return;
