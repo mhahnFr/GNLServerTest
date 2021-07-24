@@ -273,6 +273,7 @@ public class ServerFrame extends JFrame implements ActionListener {
 		}
 		server.start();
 		start.setEnabled(false);
+		kill.setEnabled(true);
 		statusText.setText("Server running");
 	}
 

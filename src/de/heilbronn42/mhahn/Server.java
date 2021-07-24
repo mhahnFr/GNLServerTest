@@ -1,6 +1,7 @@
 package de.heilbronn42.mhahn;
 
 import java.io.IOException;
+import java.lang.Thread.State;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -76,7 +77,7 @@ public class Server {
 	 * Starts the server.
 	 */
 	public void start() {
-		if (thread.isInterrupted()) {
+		if (thread.getState() == State.TERMINATED) {
 			thread = new Thread(r);
 		}
 		thread.start();

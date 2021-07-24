@@ -43,11 +43,9 @@ public class Connection implements Runnable, Closeable {
 	 */
 	public void startInNewThread() { new Thread(this).start(); }
 
-	public void close() {
-		try {
-			socket.close();
-		} catch (IOException exception) {
-		}
+	@Override
+	public void close() throws IOException {
+		socket.close();
 	}
 
 	/**
@@ -83,6 +81,7 @@ public class Connection implements Runnable, Closeable {
 		return reader.readLine();
 	}
 
+	@Override
 	public void run() {
 		try {
 			println("Hello world!");
