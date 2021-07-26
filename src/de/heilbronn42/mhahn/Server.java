@@ -70,14 +70,14 @@ public class Server {
 	 * @return Returns if the server is running or not.
 	 */
 	public boolean isRunning() {
-		return !thread.isInterrupted();
+		return thread.getState() != State.TERMINATED;
 	}
 
 	/**
 	 * Starts the server.
 	 */
 	public void start() {
-		if (thread.getState() == State.TERMINATED) {
+		if (isRunning()) {
 			thread = new Thread(r);
 		}
 		thread.start();

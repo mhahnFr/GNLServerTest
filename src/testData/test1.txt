@@ -46,13 +46,12 @@ void GNLClient_Run(const char* address, int port)
 		printf("Could not connect to %s:%d\n", address, port);
 		return;
 	}
-	GNLClient_Connection_Test(connection);
-	/*char* line = GNLClient_Connection_ReadLine(connection);
+	char* line = GNLClient_Connection_ReadLine(connection);
 	while (line != NULL)
 	{
 		printf("%s", line);
 		line = GNLClient_Connection_ReadLine(connection);
-	}*/
+	}
 	GNLClient_Connection_Delete(connection);
 }
 
@@ -66,7 +65,7 @@ int main(int argc, char** argv)
 	if (GNLClient_ParseArgs(argc, argv, &address, &port)) {
 		GNLClient_Run(address, port);
 	} else {
-		printf("usage: %s <address> <port>\n", argv[0]);
+		printf("usage: %s address port\n", argv[0]);
 	}
 
 	return 0;

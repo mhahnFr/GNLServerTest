@@ -26,5 +26,10 @@ char*                         GNLClient_Connection_ReadLine(struct GNLClient_Con
  * Writes the given text to the stream.
  */
 void                          GNLClient_Connection_WriteLine(struct GNLClient_Connection*, const char*);
+/*
+ * Reads all the text sent by the server using the get_next_line function. It
+ * compares the read text to the original test files.
+ */
+void                          GNLClient_Connection_Test(struct GNLClient_Connection*);
 
 #endif
