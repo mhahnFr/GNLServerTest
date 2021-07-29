@@ -77,7 +77,7 @@ public class Server {
 	 * Starts the server.
 	 */
 	public void start() {
-		if (isRunning()) {
+		if (!isRunning()) {
 			thread = new Thread(r);
 		}
 		thread.start();
@@ -103,7 +103,7 @@ public class Server {
 	 * @throws IOException If something goes wrong.
 	 */
 	public void sendMessage(String message) throws IOException {
-		bound.getOutputStream().write(message.getBytes());
+		bound.getOutputStream().write(message.getBytes("UTF-8"));
 		bound.getOutputStream().flush();
 	}
 }

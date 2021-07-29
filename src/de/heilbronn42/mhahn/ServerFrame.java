@@ -227,7 +227,9 @@ public class ServerFrame extends JFrame implements ActionListener {
 				int port = -1;
 				try {
 					port = Integer.parseInt(portField.getText());
-				} catch (NumberFormatException ex) {} // I mean, what else should I do here?
+				} catch (NumberFormatException ex) {
+					// Doesn't matter, so we're just ignoring the user input.
+				}
 				if (port != -1)
 					prefs.putInt(PORT_NO, port);
 			}

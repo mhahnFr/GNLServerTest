@@ -47,12 +47,6 @@ void GNLClient_Run(const char* address, int port)
 		return;
 	}
 	GNLClient_Connection_Test(connection);
-	/*char* line = GNLClient_Connection_ReadLine(connection);
-	while (line != NULL)
-	{
-		printf("%s", line);
-		line = GNLClient_Connection_ReadLine(connection);
-	}*/
 	GNLClient_Connection_Delete(connection);
 }
 

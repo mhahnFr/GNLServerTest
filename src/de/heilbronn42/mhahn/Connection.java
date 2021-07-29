@@ -1,7 +1,6 @@
 package de.heilbronn42.mhahn;
 
 import java.net.Socket;
-import java.nio.Buffer;
 import java.util.Random;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +20,7 @@ public class Connection implements Runnable, Closeable {
 	/**
 	 * The path to the test files.
 	 */
-	private static final String PATH = "../../../testData/";
+	private static final String PATH = "src/testData/";
 	/**
 	 * The name of the test files. It will be appended by {@link TEST_COUNT}
 	 * + {@code .txt}.
@@ -31,7 +30,6 @@ public class Connection implements Runnable, Closeable {
 	 * The total number of available tests. Counting starts at one (1).
 	 */
 	private static final int TEST_COUNT = 9;
-
 	/**
 	 * The socket whose connection to manage.
 	 */
@@ -90,6 +88,17 @@ public class Connection implements Runnable, Closeable {
 	}
 
 	/**
+	 * Writes the end of file to the stream.
+	 * 
+	 * @throws IOException In case that something goes wrong.
+	 * @author mhahn
+	 */
+	private void printEOF() throws IOException {
+		socket.getOutputStream().write('\0');
+		socket.getOutputStream().flush();
+	}
+
+	/**
 	 * Reads and returns a line from the {@link InputStream}.
 	 * 
 	 * @throws IOException If something goes wrong.
@@ -102,9 +111,6 @@ public class Connection implements Runnable, Closeable {
 	@Override
 	public void run() {
 		try {
-			//println("Hello world!");
-			//println("Sending yet another message!");
-			//println("socket = new ServerSocket(port);socket.setReuseAddress(true);while (!socket.isClosed()) {bound = socket.accept();Connection c = new Connection(bound);c.startInNewThread();}} catch (IOException e) {// Doesn't matter if the thread crashes.throw new RuntimeException(e);}};/*** Creates the server with the given port. It won't run right away,* call {@link start()} to settle it up.* * @param port The port on which the server should be running.*/public Server(int port) {this.port = port;thread = new Thread(r);}/*** Returns wether the server is running. Running means it should accept* new connections.* * @return Returns if the server is running or not.*/public boolean isRunning() {return !thread.isInterrupted();}/*** Starts the server.*/public void start() {if (thread.isInterrupted()) {thread = new Thread(r);}thread.start();}/*** Kills the server. Should close all connections and stop ac");
 			test();
 			close();
 		} catch (IOException e) {
@@ -117,10 +123,11 @@ public class Connection implements Runnable, Closeable {
 	 * Sends all the test files using the established connection.
 	 * 
 	 * @throws IOException If something goes wrong.
+	 * @author mhahn
 	 */
 	private void test() throws IOException {
 		for (int i = 1; i <= TEST_COUNT; i++) {
-			test(new File(PATH + FILE_NAME + Integer.toString(i) + ".txt"));
+			test(new File(PATH + FILE_NAME + Integer.toString(i) + ".txt").getAbsoluteFile());
 		}
 	}
 
@@ -129,6 +136,7 @@ public class Connection implements Runnable, Closeable {
 	 * 
 	 * @param f The file to be sent line by line.
 	 * @throws IOException If something goes wrong.
+	 * @author mhahn
 	 */
 	private void test(File f) throws IOException {
 		Random random = new Random();
@@ -136,13 +144,14 @@ public class Connection implements Runnable, Closeable {
 		while (reader.ready()) {
 			if (random.nextBoolean()) {
 				try {
-					Thread.sleep(random.nextInt(3500));
+					Thread.sleep(random.nextInt(500));
 				} catch (InterruptedException e) {
 					// Doesn't matter, just continue without delay.
 				}
 			}
 			println(reader.readLine());
 		}
+		print("\n");
 		reader.close();
 	}
 }
