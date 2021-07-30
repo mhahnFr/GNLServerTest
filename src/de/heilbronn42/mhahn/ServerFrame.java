@@ -374,8 +374,24 @@ public class ServerFrame extends JFrame implements ActionListener {
 		System.out.println("    by (mhahn, enijakow)@student.42heilbronn.de\n");
 	}
 
+	/**
+	 * Interpretes the arguments passed on the command line.
+	 * 
+	 * @param args The arguments to parse.
+	 */
+	private static void commandLineInterface(final String[] args) {
+		if (args.length > 0) {
+			int port;
+			try {
+				port = Integer.parseInt(args[0]);
+			} catch (NumberFormatException e) { return; }
+			Preferences.userNodeForPackage(ServerFrame.class).putInt(PORT_NO, port);
+		}
+	}
+
 	public static void main(final String[] args) {
 		banner();
+		commandLineInterface(args);
 		EventQueue.invokeLater(() -> new ServerFrame().setVisible(true));
 	}
 }

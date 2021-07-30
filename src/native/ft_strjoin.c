@@ -6,11 +6,12 @@
 /*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 16:41:28 by mhahn             #+#    #+#             */
-/*   Updated: 2021/07/27 23:06:53 by mhahn            ###   ########.fr       */
+/*   Updated: 2021/07/30 17:36:23 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "utils.h"
 

@@ -9,7 +9,7 @@
 #include "utils.h"
 
 /* Test file components */
-#define PATH       "/src/testData/"
+#define PATH       "/testData/"
 #define FILE_NAME  "test"
 #define ENDING     ".txt"
 #define TEST_COUNT 9

@@ -3,8 +3,6 @@
 
 #include <stdbool.h>
 
-#define GNLHeader "../../../get_next_line/get_next_line.h"
-
 /*
  * The Connection object. It includes the address to which to connect
  * as well as the file descriptor of the connection.

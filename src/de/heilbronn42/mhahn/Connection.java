@@ -20,7 +20,7 @@ public class Connection implements Runnable, Closeable {
 	/**
 	 * The path to the test files.
 	 */
-	private static final String PATH = "src/testData/";
+	private static final String PATH = "testData/";
 	/**
 	 * The name of the test files. It will be appended by {@link TEST_COUNT}
 	 * + {@code .txt}.
