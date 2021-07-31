@@ -1,4 +1,4 @@
-# Vars
+# --- Variables --- #
 
 # The path to your get_next_line. Please provide it as 
 # absolute path and without trailing slash. Note: does
@@ -16,6 +16,12 @@ JAVA_MF		=	de/heilbronn42/mhahn/manifest.mf
 
 # The buffer size to be used by the get_next_line.
 BUFFER_SIZE	=	42
+
+# The port number to be used to connect to the server.
+PORT_NO		=	42
+
+# The IP address to connect to. The server should be running on that machine.
+IP_ADDRESS	=	127.0.0.1
 
 # The source files of the get_next_line project.
 GNL_FILES	=	$(GET_NEXT_LINE_PATH)/get_next_line.c #\
@@ -45,20 +51,35 @@ C_OBJ		=	native/connection_test.o \
 				native/ft_strjoin.o \
 				native/main.o
 
-# Checks for updates after that compiles and runs the test.
+# --- Rules --- #
+
+# Checks for updates, recompiles the client and runs the tests.
+test: update compC runTest
+
+# Checks for updates, compiles everything and runs the test.
 all: update compile runTest
 
+# Checks wether there is a JRE installed.
+checkJava:
+	$(if $(command -v java),$(error No JRE installed, please install either a JRE or a JDK),)
+
+# Checks wether there is a JDK installed.
+checkJavac:
+	$(if $(command -v javac),$(error No JDK installed, if you wish to compile the server, please install a JDK (min. v: 8)),)
+
 # Runs the test. Does not compile anything.
-runTest:
-	nohup java -jar $(JAVA_EXE) 42 &
+runTest: checkJava
+ifeq ($(shell ps | grep $(JAVA_EXE) | wc -l | xargs),2)
+	nohup java -jar $(JAVA_EXE) $(PORT_NO) &
 	sleep 1
-	./$(C_EXE) 127.0.0.1 42
+endif
+	./$(C_EXE) $(IP_ADDRESS) $(PORT_NO)
 
 # Compiles the C Client and the Java Server, if needed.
 compile: compJava compC
 
 # Compiles the part written in Java of the project.
-compJava:
+compJava: checkJavac
 	javac $(JAVA_SRC)
 	jar -cfm $(JAVA_EXE) $(JAVA_MF) $(JAVA_OBJ)
 

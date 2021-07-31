@@ -5,4 +5,3 @@ do
 	echo "Compiling $f..."
 	javac "$f"
 done
-
