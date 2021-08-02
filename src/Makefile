@@ -61,10 +61,12 @@ test: update compC runTest
 all: update compile runTest
 
 # Checks wether there is a JRE installed.
+.phony: checkJava
 checkJava:
 	$(if $(command -v java),$(error No JRE installed, please install either a JRE or a JDK),)
 
 # Checks wether there is a JDK installed.
+.phony: checkJavac
 checkJavac:
 	$(if $(command -v javac),$(error No JDK installed, if you wish to compile the server, please install a JDK (min. v: 8)),)
 
@@ -105,3 +107,6 @@ clean:
 # Removes everything created by this Makefile.
 fclean: clean
 	$(RM) $(JAVA_EXE) $(C_EXE)
+
+# Cleans and recompiles everything.
+re: fclean all
