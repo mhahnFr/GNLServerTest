@@ -40,7 +40,7 @@ C_SRC	=		native/connection_test.c \
 				../../Libft/libft.a # <-- Remove this for later use, debug only!!!
 
 # The Java .class files. The star before the dot is needed to also 
-# include Class files of inner classes.
+# include class files of inner classes.
 JAVA_OBJ	=	de/heilbronn42/mhahn/Connection*.class \
 				de/heilbronn42/mhahn/Server*.class \
 				de/heilbronn42/mhahn/ServerFrame*.class
@@ -50,6 +50,7 @@ C_OBJ		=	native/connection_test.o \
 				native/connection.o \
 				native/ft_strjoin.o \
 				native/main.o
+
 
 # --- Rules --- #
 
@@ -67,15 +68,22 @@ checkJava:
 checkJavac:
 	$(if $(command -v javac),$(error No JDK installed, if you wish to compile the server, please install a JDK (min. v: 8)),)
 
-# Runs the test. Does not compile anything.
-runTest: checkJava
+# Runs the test.  Does not compile anything.
+runTest: runServerIfNotRunning runTestNoJava
+
+# Only starts the server if it is not already running. Also checks
+# wether a JRE is present. Waits a second for Java to start up.
+runServerIfNotRunning: checkJava
 ifeq ($(shell ps | grep $(JAVA_EXE) | wc -l | xargs),2)
 	nohup java -jar $(JAVA_EXE) $(PORT_NO) &
 	sleep 1
 endif
+
+# Runs the test without starting the server.
+runTestNoJava:
 	./$(C_EXE) $(IP_ADDRESS) $(PORT_NO)
 
-# Compiles the C Client and the Java Server, if needed.
+# Compiles the C Client and the Java Server.
 compile: compJava compC
 
 # Compiles the part written in Java of the project.
