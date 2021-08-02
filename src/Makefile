@@ -3,7 +3,7 @@
 # The path to your get_next_line. Please provide it as 
 # absolute path and without trailing slash. Note: does
 # not work properly with relative pathes!
-GET_NEXT_LINE_PATH = /Users/mhahn/Documents/gnljzhoumax
+GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
 
 # The name of the Java executable.
 JAVA_EXE	=	server.jar
@@ -24,8 +24,8 @@ PORT_NO		=	42
 IP_ADDRESS	=	127.0.0.1
 
 # The source files of the get_next_line project.
-GNL_FILES	=	$(GET_NEXT_LINE_PATH)/get_next_line.c #\
-				$(GET_NEXT_LINE_PATH)/get_next_line_utils.c # <-- Include this line for later use!
+GNL_FILES	=	$(GET_NEXT_LINE_PATH)/get_next_line.c \
+				$(GET_NEXT_LINE_PATH)/get_next_line_utils.c
 
 # The Java source files.
 JAVA_SRC	=	de/heilbronn42/mhahn/Connection.java \
@@ -36,8 +36,7 @@ JAVA_SRC	=	de/heilbronn42/mhahn/Connection.java \
 C_SRC	=		native/connection_test.c \
 				native/connection.c \
 				native/ft_strjoin.c \
-				native/main.c \
-				../../Libft/libft.a # <-- Remove this for later use, debug only!!!
+				native/main.c
 
 # The Java .class files. The star before the dot is needed to also 
 # include class files of inner classes.
@@ -56,6 +55,9 @@ C_OBJ		=	native/connection_test.o \
 
 # Checks for updates, recompiles the client and runs the tests.
 test: update compC runTest
+
+# Checks for updates, recompiles the client and runs the test without starting the server.
+noServer: update compC runTestNoJava
 
 # Checks for updates, compiles everything and runs the test.
 all: update compile runTest
