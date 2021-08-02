@@ -28,6 +28,7 @@ import javax.swing.JTextField;
  * @since 17.07.21
  */
 public class ServerFrame extends JFrame implements ActionListener {
+	private static final long serialVersionUID = -6340008655956794713L;
 
 	/**
 	 * Displays a status text.
