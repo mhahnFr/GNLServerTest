@@ -11,7 +11,7 @@
 void GNLClient_Banner()
 {
 	printf("\n");
-	printf("    GNLClient v0.0.1\n");
+	printf("    GNLClient v0.1\n");
 	printf("    by (mhahn, enijakow)@student.42heilbronn.de\n");
 	printf("\n");
 }
