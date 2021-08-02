@@ -97,8 +97,16 @@ compJava: checkJavac
 compC:
 	$(CC) $(CFLAGS) $(C_SRC) $(GNL_FILES) -o $(C_EXE) -D BUFFER_SIZE=$(BUFFER_SIZE) -D GNLHeader=\"$(GET_NEXT_LINE_PATH)/get_next_line.h\"
 
-# Checks wether to perform an update. !!!TODO!!!
+# Checks wether to perform an update.
+.phony: update
 update:
+ifeq ($(shell git fetch && git status | head -n 2 | grep behind | wc -l | xargs),1)
+	$(info )
+	$(info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@)
+	$(info @@@ An update is available. You can install it by typing 'git pull' @@@)
+	$(info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@)
+	$(info )
+endif
 
 # Remove all temporary files.
 clean:
