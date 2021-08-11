@@ -26,4 +26,7 @@ folder of the tester.
 
 ### Final notes
 If you have questions, you can reach me on the 42 network using my intraname:
-[mhahn](https://profile.intra.42.fr/users/mhahn). Special thanks are going to [@Nijakow](http://www.github.com/nijakow), who helped me to get this started so fast. If you have improvements or further ideas, feel free to open an issue or a pull request.
+[mhahn](https://profile.intra.42.fr/users/mhahn). Special thanks are going to
+[@Nijakow](http://www.github.com/nijakow), who helped me to get this started so
+fast. If you have improvements or further ideas, feel free to open an issue or
+a pull request.
