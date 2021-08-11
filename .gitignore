@@ -1,7 +1,0 @@
-*.class
-*.o
-*.out
-*.exe
-launch.json
-settings.json
-tasks.json
