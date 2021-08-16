@@ -2,9 +2,8 @@
 
 # The path to your get_next_line. Please provide it as absolute path and
 # without trailing slash. Note: does not work properly with relative pathes!
-#GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
-#GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line
-#GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line/gnljzhoumax
+GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
+
 # The name of the Java executable.
 JAVA_EXE	=	server.jar
 
