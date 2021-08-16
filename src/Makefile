@@ -3,7 +3,8 @@
 # The path to your get_next_line. Please provide it as absolute path and
 # without trailing slash. Note: does not work properly with relative pathes!
 #GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
-GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line
+#GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line
+#GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line/gnljzhoumax
 # The name of the Java executable.
 JAVA_EXE	=	server.jar
 
@@ -42,7 +43,7 @@ JAVA_ISRC	=	de/heilbronn42/mhahn/ServerFrame.java
 # The C source files.
 C_SRC	=		native/connection_test.c \
 				native/connection.c \
-				native/ft_strjoin.c \
+				native/stringJoiner.c \
 				native/main.c
 
 # A macro to generate the java class files.
@@ -60,13 +61,13 @@ CFLAGS		=	-Wall -Werror -Wextra
 
 # --- Rules --- #
 
-# Checks for updates, recompiles the client and runs the tests.
+# Checks for updates, and runs the tests.
 test: update runTest
 
-# Checks for updates, recompiles the client and runs the test without starting the server.
+# Checks for updates, and runs the test without starting the server.
 noServer: update runTestNoJava
 
-# Checks for updates, compiles everything and runs the test.
+# Checks for updates, and runs the test.
 all: update runTest
 
 # Checks wether there is a JRE installed.
@@ -126,9 +127,11 @@ endif
 clean:
 	- $(RM) $(JAVA_OBJ) $(C_OBJ) $(GNL_OBJ) $(JAVA_IOBJ) *~ nohup.out
 
-# Removes everything created by this Makefile.
+# Removes everything created by this Makefile. Stops the server if it is
+# running.
 .phony: fclean
 fclean: clean
+	- kill $(shell ps | grep $(JAVA_EXE) | awk '{print $$1}')
 	- $(RM) $(JAVA_EXE) $(C_EXE)
 
 # Cleans and recompiles everything.

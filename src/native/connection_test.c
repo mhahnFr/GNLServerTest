@@ -60,7 +60,7 @@ char* GNLClient_Connection_CreatePath(char** index)
 	char* path = PATH FILE_NAME "0" ENDING;
 	char* buf = malloc(MAXPATHLEN);
 	char* pwd = getcwd(buf, MAXPATHLEN);
-	char* aPath = ft_strjoin(pwd, path);
+	char* aPath = stringJoiner(pwd, path);
 	*index = aPath + strlen(pwd) + strlen(PATH) + strlen(FILE_NAME);
 	free(buf);
 	return aPath;

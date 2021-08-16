@@ -4,6 +4,6 @@
 /*
  * Creates and returns a new string consisting of the two given ones.
  */
-char*  ft_strjoin(char const*, char const*);
+char*  stringJoiner(char const*, char const*);
 
 #endif
