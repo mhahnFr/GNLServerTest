@@ -2,7 +2,8 @@
 
 # The path to your get_next_line. Please provide it as absolute path and
 # without trailing slash. Note: does not work properly with relative pathes!
-GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
+#GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
+GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line
 
 # The name of the Java executable.
 JAVA_EXE	=	server.jar
@@ -130,7 +131,7 @@ clean:
 # running.
 .phony: fclean
 fclean: clean
-	- kill $(shell ps | grep $(JAVA_EXE) | awk '{print $$1}')
+	- kill $(shell ps | grep $(JAVA_EXE) | head -n 1 | awk '{print $$1}')
 	- $(RM) $(JAVA_EXE) $(C_EXE)
 
 # Cleans and recompiles everything.
