@@ -1,4 +1,4 @@
-<pre>
+```
   .#####.      ';#########.        ######        ';#########.        
  ##     ##       ##      ##      ##      ##        ##      ##        
   ##             ##     .#`     ##        ##       ##     .#`        
@@ -11,7 +11,7 @@
        ,_,                             '##.,                         
        |C| mhahn                            '##.,    ,.##'           
        '-'                                       '##'                
-</pre>
+```
 # Welcome to 42cursus/get_next_line Server Tester!
 In order to get started, you need to modify the variable ``GET_NEXT_LINE_PATH`` in the Makefile to the **absolute path** to your ``get_next_line`` folder. You run the tester by simply typing ``make`` inside the ``src`` folder of the tester.
 
