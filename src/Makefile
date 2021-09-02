@@ -114,13 +114,7 @@ $(C_EXE): $(C_OBJ) $(GNL_OBJ)
 # Checks wether to perform an update.
 .phony: update
 update:
-ifeq ($(shell git fetch && git status | head -n 2 | grep behind | wc -l | xargs),1)
-	$(info )
-	$(info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@)
-	$(info @@@ An update is available. You can install it by typing 'git pull' @@@)
-	$(info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@)
-	$(info )
-endif
+	- ./update.sh
 
 # Remove all temporary files.
 .phony: clean
