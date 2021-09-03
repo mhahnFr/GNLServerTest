@@ -50,6 +50,17 @@ void GNLClient_Connection_Delete(struct GNLClient_Connection* self)
 	free(self);
 }
 
+char* GNLClient_Connection_SystemReadLine(struct GNLClient_Connection* self)
+{
+	char* ogl = NULL;
+	size_t ignoreIt = 1;
+	ssize_t count = getline(&ogl, &ignoreIt, fdopen(self->fd, "r"));
+
+	if (count == -1) return NULL;
+
+	return ogl;
+}
+
 char* GNLClient_Connection_ReadLine(struct GNLClient_Connection* self)
 {
 	return get_next_line(self->fd);
