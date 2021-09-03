@@ -1,9 +1,8 @@
 # --- Variables --- #
 
-# The path to your get_next_line. Please provide it as absolute path and
-# without trailing slash. Note: does not work properly with relative pathes!
-#GET_NEXT_LINE_PATH = /Users/<intra login>/<path to GNL>
-GET_NEXT_LINE_PATH = /Users/mhahn/Documents/get_next_line
+# The path to your get_next_line. The default path is the parent directory of
+# this tester; you can simply edit it if needed.
+GET_NEXT_LINE_PATH = ../../
 
 # The name of the Java executable.
 JAVA_EXE	=	server.jar
@@ -97,7 +96,7 @@ runTestNoJava: $(C_EXE)
 
 # Compiles each C file individually.
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $< -D BUFFER_SIZE=$(BUFFER_SIZE) -D GNLHeader=\"$(GET_NEXT_LINE_PATH)/get_next_line.h\"
+	$(CC) $(CFLAGS) -c -o $@ $< -D BUFFER_SIZE=$(BUFFER_SIZE) -I $(GET_NEXT_LINE_PATH)
 
 # Compiles each Java file individually.
 %.class: %.java
@@ -109,7 +108,7 @@ $(JAVA_EXE): $(JAVA_OBJ)
 
 # Compiles the part written in C of the project.
 $(C_EXE): $(C_OBJ) $(GNL_OBJ)
-	$(CC) $(CFLAGS) -o $(C_EXE) -D BUFFER_SIZE=$(BUFFER_SIZE) -D GNLHeader=\"$(GET_NEXT_LINE_PATH)/get_next_line.h\" $(C_OBJ) $(GNL_OBJ)
+	$(CC) $(CFLAGS) -o $(C_EXE) $(C_OBJ) $(GNL_OBJ)
 
 # Checks wether to perform an update.
 .phony: update

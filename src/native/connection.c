@@ -6,7 +6,7 @@
 #include <arpa/inet.h>
 
 #include "connection.h"
-#include GNLHeader
+#include "get_next_line.h"
 
 struct GNLClient_Connection
 {
