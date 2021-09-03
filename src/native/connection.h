@@ -30,7 +30,7 @@ void                          GNLClient_Connection_WriteLine(struct GNLClient_Co
  * Reads all the text sent by the server using the get_next_line function. It
  * compares the read text to the original test files.
  */
-void                          GNLClient_Connection_Test(struct GNLClient_Connection*);
+void                          GNLClient_Connection_Test(struct GNLClient_Connection*, struct GNLClient_Connection*);
 /*
  * Constructs the path to the test files. Returns the created path. The parameter
  * is used to store a pointer to the digit in the path, so that it can be easily
@@ -42,7 +42,7 @@ char*                         GNLClient_Connection_CreatePath(char**);
  * text read from the given file using the system functions. It prints then the
  * result of the test.
  */
-void                          GNLClient_Connection_TestNo(struct GNLClient_Connection*, char*, int);
+void                          GNLClient_Connection_TestNo(struct GNLClient_Connection*, struct GNLClient_Connection*);//char*, int);
 /*
  * Prints the given result of the given test number.
  */
@@ -51,4 +51,6 @@ void                          GNLClient_Connection_PrintResult(int, bool);
  * Appends a newline character to the given line if needed.
  */
 void                          GNLClient_Connection_EditSystemLine(char**);
+
+char*                         GNLClient_Connection_SystemReadLine(struct GNLClient_Connection*);
 #endif
