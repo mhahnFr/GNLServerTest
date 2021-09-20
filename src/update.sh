@@ -1,5 +1,5 @@
 #/bin/sh
-version=v0.1
+version=v0.2
 git fetch --all
 newVersion=$(git tag | tail -n 1)
 if [ "$version" != "$newVersion" ]; then
