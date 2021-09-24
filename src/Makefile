@@ -61,12 +61,15 @@ CFLAGS		=	-Wall -Werror -Wextra
 # --- Rules --- #
 
 # Checks for updates, and runs the tests.
+.phony: test
 test: update runTest
 
 # Checks for updates, and runs the test without starting the server.
+.phony: noServer
 noServer: update runTestNoJava
 
 # Checks for updates, and runs the test.
+.phony: all
 all: update runTest
 
 # Checks wether there is a JRE installed.
@@ -80,10 +83,12 @@ checkJavac:
 	$(if $(command -v javac),$(error No JDK installed, if you wish to compile the server, please install a JDK (min. v: 8)),)
 
 # Runs the test. Does not compile anything.
+.phony: runTest
 runTest: runServerIfNotRunning runTestNoJava
 
 # Only starts the server if it is not already running. Also checks
 # wether a JRE is present. Waits a second for Java to start up.
+.phony: runServerIfNotRunning
 runServerIfNotRunning: checkJava $(JAVA_EXE)
 ifeq ($(shell ps | grep $(JAVA_EXE) | wc -l | xargs),2)
 	nohup java -jar $(JAVA_EXE) $(PORT_NO) &
@@ -91,6 +96,7 @@ ifeq ($(shell ps | grep $(JAVA_EXE) | wc -l | xargs),2)
 endif
 
 # Runs the test without starting the server.
+.phony: runTestNoJava
 runTestNoJava: $(C_EXE)
 	./$(C_EXE) $(IP_ADDRESS) $(PORT_NO)
 
@@ -128,4 +134,6 @@ fclean: clean
 	- $(RM) $(JAVA_EXE) $(C_EXE)
 
 # Cleans and recompiles everything.
+.phony: re
 re: fclean all
+
